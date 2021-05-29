@@ -1,7 +1,7 @@
 {
   "name": "generative",
   "version": "0.0.0",
-  "homepage": "http://iancarrasco.github.io/p5de",
+  "homepage": "http://iancarras.co/p5de",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

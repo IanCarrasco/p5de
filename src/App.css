@@ -1,0 +1,55 @@
+@font-face {
+    font-family: NeueHaas;
+    src: url('./fonts/NeueHaasGrotDisp-Roman.woff2');
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #1e1e1e;
+}
+.editor{
+    width:45vw;
+}
+.app-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: calc(100vh - 63px);
+    padding: 8px;
+}
+.output-canvas{
+    background-color:black;
+    width: 100%;
+}
+.frame-section{
+    width:  48vw;
+}
+.pframe{
+    width: 100%;
+    outline: none;
+    border: 0px; 
+    height: 90vh;
+    padding: 0px;
+    overflow: hidden;
+}
+.header-bar{
+    height: 55px;
+    width: 100%;
+    margin:0px;
+    position: relative;
+    top:0px;
+    display: flex;
+    box-shadow: rgb(0 0 0 / 10%) 0px 6px 20px;
+    background-color: #131313;
+    font-family: 'NeueHaas';
+    color: white;
+
+}
+.header-bar h1{
+    padding-left: 40px;
+    align-self: center;
+}
+iframe{
+    padding: 0px;
+}

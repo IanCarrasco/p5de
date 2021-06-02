@@ -26,6 +26,7 @@ body{
 }
 .frame-section{
     width:  50vw;
+    transition: 0.05s;
 }
 .pframe{
     width: 100%;
@@ -202,4 +203,19 @@ a:hover{
 }
 .gallery-entry h3{
     height: 50px;
+}
+.options-pane{
+    height: 50px;
+    display: flex;
+    width: 100vw;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.panel-option{
+    height: 33px !important;
+    padding: 1px;
+    margin: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
 }

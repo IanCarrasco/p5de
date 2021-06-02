@@ -5,6 +5,7 @@ import {loadScript, codegen} from '../utils.js'
 import { useCookies } from "react-cookie";
 import db, {DBContext} from '../db/db_spec'
 import Header from './Header'
+import SplitPane from 'react-split-pane'
 
 
 
@@ -13,6 +14,8 @@ export default function EditorView(props) {
 
     const [script, setScript] = useState("")
     const [title, setTitle] = useState("")
+    const [codeWidth, setCodeWidth] = useState("50vw");
+    const [previewWidth, setPreviewWidth] = useState("50vw");
 
     const db_ref = useContext(DBContext)
 
@@ -50,7 +53,28 @@ export default function EditorView(props) {
     const reloadHandler = () => {
         iframeRef.current.contentWindow.location.reload()
     }
-
+    const expandHandler = ({panel}) => {
+        switch (panel){
+            case "code":
+                if(codeWidth == "50vw"){
+                    setCodeWidth("100vw")
+                    setPreviewWidth("0vw");
+                } else{
+                    setCodeWidth("50vw")
+                    setPreviewWidth("50vw");
+                }
+                break;
+            case "preview":
+                if(previewWidth == "50vw"){
+                    setPreviewWidth("100vw")
+                    setCodeWidth("0vw");
+                } else{
+                    setCodeWidth("50vw")
+                    setPreviewWidth("50vw");
+                }
+                break;
+        }
+    }
     useEffect(() => {
         db_ref.sketches.get(sketch_id).then(record => {
             setScript(record.source)
@@ -66,21 +90,26 @@ export default function EditorView(props) {
                     refreshFn={props.refreshFn}
                     sketch_id={sketch_id}
                     isEditor={true}></Header>
+            <div className="options-pane">
+                <button onClick={() => expandHandler({panel:"code"})} className="button-action panel-option">Expand Code</button>
+                <button onClick={() => expandHandler({panel:"preview"})} className="button-action panel-option">Expand Preview</button>
+            </div>
             <div className="app-container">
-                <Editor
-                height="90vh"
-                width="50vw"
-                theme="vs-dark"
-                options={{minimap:false}}
-                defaultLanguage="javascript"
-                value={script}
-                className="editor"
-                onMount={handleEditorDidMount}
-                onChange={handleEditorChange}
-                />
-                <div className="frame-section">
-                    <iframe ref={iframeRef} className="pframe" frameBorder="0" marginWidth="0" marginHeight="0" srcDoc={codegen(script)}></iframe>
-                </div>
+
+                    <Editor
+                    height="90vh"
+                    width={codeWidth}
+                    theme="vs-dark"
+                    options={{minimap:false}}
+                    defaultLanguage="javascript"
+                    value={script}
+                    className="editor"
+                    onMount={handleEditorDidMount}
+                    onChange={handleEditorChange}
+                    />
+                    <div className="frame-section" style={{width:previewWidth}}>
+                        <iframe ref={iframeRef} className="pframe" frameBorder="0" marginWidth="0" marginHeight="0" srcDoc={codegen(script)}></iframe>
+                    </div>
             </div>
         </>
     )

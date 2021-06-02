@@ -37,9 +37,6 @@ export default function EditorView(props) {
         });
         //setCookie("script", value, { path: '/' });
     }
-    const handleTitleChange = (e) => {
-        setTitle(e.target.value)
-    }
     const saveFile = () => {
         console.log("fhfhahsh")
         let file = new Blob([script], {type: "text/plain"});
@@ -48,12 +45,6 @@ export default function EditorView(props) {
         a.download = title + ".js";
         a.href = URL.createObjectURL(file);
         a.click();
-    }
-
-    const updateDb = (e) => {
-        db.sketches.update(sketch_id, {name: e}).then(function (updated) {
-            if(updated){console.log ("Name updated.")};
-        });
     }
 
     const reloadHandler = () => {
@@ -70,9 +61,10 @@ export default function EditorView(props) {
     return (
         <>
             <Header sketchTitle={title} 
-                    exportHandler={saveFile} titleHandler={handleTitleChange} 
+                    exportHandler={saveFile} titleHandler={(e) => setTitle(e)} 
                     reloadHandler={reloadHandler} 
-                    update={updateDb} 
+                    refreshFn={props.refreshFn}
+                    sketch_id={sketch_id}
                     isEditor={true}></Header>
             <div className="app-container">
                 <Editor

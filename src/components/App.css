@@ -72,16 +72,19 @@ iframe{
     background-color: #333;
     margin: 10px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     font-size: 1.2rem;
     color:#fff;
     text-decoration: none !important;
     transition: 0.2s;
+    z-index: 1;
 }
-.gallery-entry:hover{
+
+/* .gallery-entry:hover{
     background-color:rgb(87, 87, 87);
-}
+} */
 .plus-icon{
     width: 200px;
     height: 200px;
@@ -99,7 +102,7 @@ iframe{
 .overlay-modal{
     width: 100vw;
     height: calc(100vh - 55px);
-    z-index: 999;
+    z-index: 998;
     margin: 0;
     position: relative;
     display: flex;
@@ -116,6 +119,7 @@ iframe{
     align-items: flex-start;
     padding: 15px;
     color:#fff;
+    z-index: 999;
     justify-content: center;
     flex-direction: column;
 }
@@ -148,4 +152,54 @@ iframe{
 }
 a{
     text-decoration: none;
+    color:#fff;
+}
+a:hover{
+    text-decoration: underline;
+}
+.close-overlay{
+    position: relative;
+    top:-75px;
+    left:97%;
+    color:#fff;
+    height: auto;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+}
+.menu-toggle{
+    align-self: flex-start;
+    margin:0px;
+    margin-left:180px;
+    justify-self: end;
+    height: fit-content;
+    cursor: pointer;
+}
+.sketchOptions{
+    z-index: 999;
+    height: 50px;
+}
+.sketchOptions div{
+    width: 200px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.sketchOptions div::before{
+    height: 0px;
+    content: '';
+}
+.sketchOptions div::after{
+    content: '';
+    height: 50px;
+}
+.sketchOptions :nth-child(2){
+    background-color: #f84361;
+}
+.sketchOptions :nth-child(1){
+    background-color: #437cf8;
+}
+.gallery-entry h3{
+    height: 50px;
 }

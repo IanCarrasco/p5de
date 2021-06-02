@@ -5,6 +5,7 @@ import EditorView from './Editor'
 import './App.css'
 import db, {DBContext} from '../db/db_spec'
 import Header from './Header'
+import GalleryItem from './GalleryItem'
 
 
 export default function App() {
@@ -15,8 +16,8 @@ export default function App() {
     const refreshState = () =>{
         db.sketches.toArray().then(sks =>
             setSketches(sks))
+        console.log("refreshed")
     }
-
 
     const newSketchHandler = () => {
         setModal(true)
@@ -32,10 +33,7 @@ export default function App() {
 
     useEffect(() => {
         refreshState()
-        return () => {
-        }
     }, [])
-
 
     return (
             <Router>
@@ -44,6 +42,7 @@ export default function App() {
                         {modal &&
                         <div className="overlay-modal">
                             <div className="name-prompt">
+                                <h3  onClick={() => setModal(false)} className="close-overlay">✕</h3>
                                 <h2>Name your sketch.</h2>
                                 <input type="text" onChange={e => setName(e.target.value)} value={name}></input>
                                 <button className="button-action" onClick={createHandler}>Create</button>
@@ -55,12 +54,12 @@ export default function App() {
                                 <h1 className="plus-icon">+</h1>
                             </div>
                             {sketches.map(sketch =>
-                                <Link to={"/editor/" + sketch.id} key={sketch.id}><div className="gallery-entry"><h3>{sketch.name}</h3></div></Link>
+                                <GalleryItem key={sketch.id} sketch={sketch} refreshFn={refreshState}/>
                             )}
                         </div>
                 </Route>
                 <DBContext.Provider value={db}>
-                    <Route path='/editor/:id' component={EditorView}/>    
+                    <Route path='/editor/:id' render={routeProps => <EditorView refreshFn={refreshState} {...routeProps}></EditorView>}/>    
                 </DBContext.Provider>
             </Router>
 

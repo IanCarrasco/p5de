@@ -1,0 +1,151 @@
+@font-face {
+    font-family: NeueHaas;
+    src: url('../fonts/NeueHaasGrotDisp-Roman.woff2');
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #1e1e1e;
+    font-family: "NeueHaas";
+    overflow-y: hidden;
+}
+.editor{
+    width:50vw;
+}
+.app-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: calc(100vh - 63px);
+    padding: 8px;
+}
+.output-canvas{
+    background-color:black;
+    width: 100%;
+}
+.frame-section{
+    width:  50vw;
+}
+.pframe{
+    width: 100%;
+    outline: none;
+    border: 0px; 
+    height: 90vh;
+    padding: 0px;
+    overflow: hidden;
+}
+.header-bar{
+    height: 55px;
+    width: 100%;
+    margin:0px;
+    position: relative;
+    top:0px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: rgb(0 0 0 / 10%) 0px 6px 20px;
+    background-color: #131313;
+    font-family: 'NeueHaas';
+    color: white;
+
+}
+.hb-text{
+    line-height: 25px;
+    font-size: 1.5rem;
+    margin-left: 20px;
+}
+iframe{
+    padding: 0px;
+}
+.gallery-container{
+    width: calc(100vw - 30px);
+    height: auto;
+    display: flex;
+    top:55px;
+    position: absolute;
+    padding:15px;
+    flex-wrap: wrap;
+}
+.gallery-entry{
+    width: 200px;
+    height: 200px;
+    background-color: #333;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color:#fff;
+    text-decoration: none !important;
+    transition: 0.2s;
+}
+.gallery-entry:hover{
+    background-color:rgb(87, 87, 87);
+}
+.plus-icon{
+    width: 200px;
+    height: 200px;
+    margin: 0px;
+    line-height:200px;
+    text-align: center;
+    font-size: 3rem;
+    color:#fff;
+    cursor: pointer;
+}
+.header-bar a{
+    color:#fff;
+    text-decoration: none;
+}
+.overlay-modal{
+    width: 100vw;
+    height: calc(100vh - 55px);
+    z-index: 999;
+    margin: 0;
+    position: relative;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+.name-prompt{
+    width: 500px;
+    height: 350px;
+    background-color: #131313;
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-start;
+    padding: 15px;
+    color:#fff;
+    justify-content: center;
+    flex-direction: column;
+}
+.name-prompt input{
+    height: 20%;
+    width: 80%;
+    background-color: rgba(0, 0, 0, 0);
+    border:0px;
+    border-bottom: 1px solid #fff;
+    outline:none;
+    font-size: 2rem;
+    color:#fff;
+}
+.button-action{
+    width: 100px;
+    height: 30px;
+    margin-right: 20px;
+    justify-self: flex-end;
+    margin-top:15px;
+    background-color: #3951d8;
+    border: 0px;
+    border-radius: 5px;
+    color:#fff;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.name-prompt button:hover{
+    background-color: #435ef8;
+    
+}
+a{
+    text-decoration: none;
+}

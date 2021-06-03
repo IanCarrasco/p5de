@@ -15,13 +15,17 @@ export default function EditorView(props) {
     const [script, setScript] = useState("")
     const [title, setTitle] = useState("")
     const [codeWidth, setCodeWidth] = useState("50vw");
+    const [codeBtnText, setCodeBtnText] = useState("Expand Code")
+    const [editBtnText, setEditBtnText] = useState("Open Settings")
+    const [previewBtnText, setPreviewBtnText] = useState("Expand Preview")
     const [previewWidth, setPreviewWidth] = useState("50vw");
+    const [settingsOpen, setSettingsOpen] = useState(false);
+    const [settings, setSettings] = useState("{}");
+
 
     const db_ref = useContext(DBContext)
 
     const iframeRef = useRef(null)
-
-    console.log(props.match.params.id)
 
     const sketch_id = parseInt(props.match.params.id)
 
@@ -40,6 +44,20 @@ export default function EditorView(props) {
         });
         //setCookie("script", value, { path: '/' });
     }
+    const handleSettingsEditorDidMount = (editor, monaco) => {
+        editorRef.current = editor; 
+        db_ref.settings.get(1).then(record => {
+            setSettings(record.config)
+            editor.value = record.config
+        })
+      }
+    const handleSettingsEditorChange = (value, event) => {
+          setSettings(value);
+          db.settings.update(1, {config: value}).then(function (updated) {
+              if(updated){console.log ("Settings updated.")};
+          });
+          //setCookie("script", value, { path: '/' });
+      }
     const saveFile = () => {
         console.log("fhfhahsh")
         let file = new Blob([script], {type: "text/plain"});
@@ -59,25 +77,38 @@ export default function EditorView(props) {
                 if(codeWidth == "50vw"){
                     setCodeWidth("100vw")
                     setPreviewWidth("0vw");
+                    setCodeBtnText("Collapse Code")
                 } else{
                     setCodeWidth("50vw")
                     setPreviewWidth("50vw");
+                    setCodeBtnText("Expand Code")
                 }
                 break;
             case "preview":
                 if(previewWidth == "50vw"){
                     setPreviewWidth("100vw")
                     setCodeWidth("0vw");
+                    setPreviewBtnText("Collapse Preview")
                 } else{
                     setCodeWidth("50vw")
                     setPreviewWidth("50vw");
+                    setPreviewBtnText("Expand Preview")
+
                 }
                 break;
         }
     }
+
+    const editSettings = () => {
+        
+    }
+
     useEffect(() => {
         db_ref.sketches.get(sketch_id).then(record => {
             setScript(record.source)
+        })
+        db_ref.settings.get(1).then(record => {
+            setSettings(record.config)
         })
         return () => {
         }
@@ -91,25 +122,44 @@ export default function EditorView(props) {
                     sketch_id={sketch_id}
                     isEditor={true}></Header>
             <div className="options-pane">
-                <button onClick={() => expandHandler({panel:"code"})} className="button-action panel-option">Expand Code</button>
-                <button onClick={() => expandHandler({panel:"preview"})} className="button-action panel-option">Expand Preview</button>
+                <div>
+                    <button onClick={() => expandHandler({panel:"code"})} className="button-action panel-option">{codeBtnText}</button>
+                    <button onClick={() => {setSettingsOpen(!settingsOpen); setEditBtnText(!settingsOpen ? "Close Settings": "Open Settings")}} className="button-action panel-option">{editBtnText}</button>
+                </div>
+                <button onClick={() => expandHandler({panel:"preview"})} className="button-action panel-option">{previewBtnText}</button>
             </div>
             <div className="app-container">
-
+                    {settingsOpen &&
                     <Editor
                     height="90vh"
                     width={codeWidth}
                     theme="vs-dark"
-                    options={{minimap:false}}
+                    defaultLanguage="json"
+                    options={{fontSize:16}}
+                    value={settings}
+                    className="editor"
+                    onMount={handleSettingsEditorDidMount}
+                    onChange={handleSettingsEditorChange}
+                    />}
+                    
+                    {!settingsOpen &&
+                    <>
+                    <Editor
+                    height="90vh"
+                    width={codeWidth}
+                    theme="vs-dark"
+                    options={JSON.parse(settings)}
                     defaultLanguage="javascript"
                     value={script}
                     className="editor"
                     onMount={handleEditorDidMount}
                     onChange={handleEditorChange}
                     />
+                    
                     <div className="frame-section" style={{width:previewWidth}}>
                         <iframe ref={iframeRef} className="pframe" frameBorder="0" marginWidth="0" marginHeight="0" srcDoc={codegen(script)}></iframe>
                     </div>
+                    </>}
             </div>
         </>
     )

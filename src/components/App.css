@@ -214,6 +214,7 @@ a:hover{
 }
 .panel-option{
     height: 33px !important;
+    width: 125px;
     padding: 1px;
     margin: 0px;
     margin-left: 10px;

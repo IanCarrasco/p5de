@@ -18,7 +18,7 @@ export const codegen = (script) => {
                         var toggle = false
                     </script>
                 </head>
-                <body>
+                <body style="overflow:hidden;">
                     <main></main>
                 </body>
             </html>

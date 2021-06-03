@@ -13,6 +13,8 @@ export default function EditorView(props) {
     const editorRef = useRef(null);
 
     const [script, setScript] = useState("")
+    const [iscript, setIScript] = useState("")
+
     const [title, setTitle] = useState("")
     const [codeWidth, setCodeWidth] = useState("50vw");
     const [codeBtnText, setCodeBtnText] = useState("Expand Code")
@@ -20,6 +22,7 @@ export default function EditorView(props) {
     const [previewBtnText, setPreviewBtnText] = useState("Expand Preview")
     const [previewWidth, setPreviewWidth] = useState("50vw");
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [isLive, setIsLive] = useState(false);
     const [settings, setSettings] = useState("{}");
 
 
@@ -33,15 +36,20 @@ export default function EditorView(props) {
       editorRef.current = editor; 
         db_ref.sketches.get(sketch_id).then(record => {
             setScript(record.source)
+            setIScript(record.source)
             setTitle(record.name)
             editor.value = record.source
         })
     }
     const handleEditorChange = (value, event) => {
         setScript(value);
+        if(isLive){
+            setIScript(value);
+        }
         db.sketches.update(sketch_id, {source: value}).then(function (updated) {
             if(updated){console.log ("Source updated.")};
         });
+
         //setCookie("script", value, { path: '/' });
     }
     const handleSettingsEditorDidMount = (editor, monaco) => {
@@ -70,6 +78,7 @@ export default function EditorView(props) {
 
     const reloadHandler = () => {
         iframeRef.current.contentWindow.location.reload()
+        setIScript(script)
     }
     const expandHandler = ({panel}) => {
         switch (panel){
@@ -126,7 +135,10 @@ export default function EditorView(props) {
                     <button onClick={() => expandHandler({panel:"code"})} className="button-action panel-option">{codeBtnText}</button>
                     <button onClick={() => {setSettingsOpen(!settingsOpen); setEditBtnText(!settingsOpen ? "Close Settings": "Open Settings")}} className="button-action panel-option">{editBtnText}</button>
                 </div>
-                <button onClick={() => expandHandler({panel:"preview"})} className="button-action panel-option">{previewBtnText}</button>
+                <div>
+                    <button onClick={() => {setIsLive(!isLive);setIScript(script)}} className={`button-action panel-option ${!isLive ? 'green': 'red'}`}>{isLive ? "Disable" : "Enable"} Live Preview</button>
+                    <button onClick={() => expandHandler({panel:"preview"})} className="button-action panel-option">{previewBtnText}</button>
+                </div>
             </div>
             <div className="app-container">
                     {settingsOpen &&
@@ -157,7 +169,7 @@ export default function EditorView(props) {
                     />
                     
                     <div className="frame-section" style={{width:previewWidth}}>
-                        <iframe ref={iframeRef} className="pframe" frameBorder="0" marginWidth="0" marginHeight="0" srcDoc={codegen(script)}></iframe>
+                        <iframe ref={iframeRef} className="pframe" frameBorder="0" marginWidth="0" marginHeight="0" srcDoc={codegen(iscript)}></iframe>
                     </div>
                     </>}
             </div>

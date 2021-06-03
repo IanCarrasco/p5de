@@ -27,6 +27,7 @@ body{
 .frame-section{
     width:  50vw;
     transition: 0.05s;
+    overflow: hidden !important;
 }
 .pframe{
     width: 100%;
@@ -34,7 +35,7 @@ body{
     border: 0px; 
     height: 90vh;
     padding: 0px;
-    overflow: hidden;
+    overflow: hidden !important;
 }
 .header-bar{
     height: 55px;
@@ -57,6 +58,7 @@ body{
 }
 iframe{
     padding: 0px;
+    overflow: hidden !important;
 }
 .gallery-container{
     width: calc(100vw - 30px);
@@ -214,9 +216,15 @@ a:hover{
 }
 .panel-option{
     height: 33px !important;
-    width: 125px;
+    width: 135px;
     padding: 1px;
     margin: 0px;
     margin-left: 10px;
     margin-right: 10px;
+}
+.green{
+    background-color: rgb(44, 223, 163);
+}
+.red{
+    background-color: rgb(231, 80, 54);
 }
